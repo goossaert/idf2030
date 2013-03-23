@@ -1,43 +1,26 @@
 $(document).ready(function() {
 
-/*********************************************************
- *  ROUTING: START
- *********************************************************/
-
-
 Path.map("#!/welcome").to(function(){
-    show_welcome();
+    //show_welcome();
 });
 
+Path.map("#!/data").to(function(){
+    get_data(48.85676, 2.35099, 100000);
+    //48.8520930694,2.34738897685,1000
+});
+
+
+
 Path.map("#!/filegroups/:filter/:offset/:limit").to(function(){
-    mark_active('nav-main-files');
-    clean_filegroup_interval();
-    load_filegroups(this.params["filter"], this.params["offset"], this.params["limit"]);
+    //mark_active('nav-main-files');
+    //clean_filegroup_interval();
+    //load_filegroups(this.params["filter"], this.params["offset"], this.params["limit"]);
 });
 
 
 Path.root("#!/welcome");
 
 Path.listen();
-
-/*********************************************************
- *  ROUTING: END
- *********************************************************/
-
-
-
-function show_welcome() {
-    alert('hello');
-    /*
-    data = {};
-    $('#navbar').remove();
-    var template_welcome = $('#welcome_template').html();
-    var html = Mustache.to_html(template_welcome, data);
-    $('#content').html(html).css('display','');
-    */
-}
-
-
 
 
 });
