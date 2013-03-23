@@ -57,9 +57,11 @@
 			//event handlers
 			$("a#go").click(function(e){
 				console.log("begin");
+				$("section#content nav").toggle();
 				locateStart(loc);
 				//appel fonction recup de data
 				t=loc.split(",");
+				//get_data(t[0], t[1], $("#distance").val(), 100, visu_map);
 				get_data(t[0], t[1], $("#distance").val(), 10, visu_map);
 			});
 		});
@@ -68,30 +70,22 @@
 </head>
 <body>
 
-<div style="clear: both;"></div>
+<!--Body content-->
+<section id="content">
 
-<div class="container-fluid">
+	<h1>Titre</h1>
 
-    <!--Body content-->
-    <div id="content">
-	
-		<h1>Map</h1>
-	
-        <input class="typeahead" type="text" placeholder="Ville" />
-		
-		<input type="text" id="gps" placeholder="Coordonnées GPS" />
-
-		<input type="text" name="distance" id="distance" value="1000" />
-	
+	<nav>
+		<input class="typeahead" type="text" placeholder="Ville" value="" />		
+		<input type="text" id="gps" placeholder="Coordonnées GPS" value="" />
+		<input type="text" name="distance" id="distance" value="100000" value="" />		
 		<a href="#" id="go">Go !</a>
+	</nav>
+
+	<div id="map"></div>
 	
-		<div id="map"></div>
-		
+</section>
 
-        <br>
-    </div>
-
-</div>
 
 </body>
 </html>

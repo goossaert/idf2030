@@ -25,6 +25,7 @@ $('.typeahead').typeahead(
     updater: function(city_name){
         //console.log("hello - You selected: " + JSON.stringify(cities_map[city_name], null, 2));
 		$("#gps").val(cities_map[city_name]['geometry'][0] + "," + cities_map[city_name]['geometry'][1]);
+		loc=cities_map[city_name]['geometry'][0] + "," + cities_map[city_name]['geometry'][1];
         return city_name;
     }
   }

@@ -5,16 +5,16 @@
 //////
 //VAR 
 var globalGroup = new L.LayerGroup();	
-var mapCenter = new L.LatLng(20.0,-0.09);
-var zoom=2;	
+var mapCenter = new L.LatLng(48.8436355,2.3171283);
+var zoom=10;	
 var map;//à declarer ici sinon IE bug
 
 var icon = L.Icon.extend({
     options:{
 		iconUrl: '',//constructeur
-		iconiSize: new L.Point(45, 75),
-		iconAnchor: new L.Point(22, 75),
-		popupAnchor: new L.Point(0, -70)
+		iconiSize: new L.Point(120, 160),
+		iconAnchor: new L.Point(60, 160),
+		popupAnchor: new L.Point(0, -160)
 	}
 });
 
@@ -41,17 +41,24 @@ var geojsonFeature = {
 //////////////
 // FUNCTIONS
 
+function getIconFromType(type){
+	if(type==1){
+		return "img/
+	}else if(type==2){
+	
+	}
+}
+
 function locateStart(loc){
 		tPos=loc.split(",");
 		var markerLocation = new L.LatLng(parseFloat(tPos[0]), parseFloat(tPos[1]));
 		
-		//var ico = new smallIcon({"iconUrl": getIconTraveler(id,"big")});
-		//var marker = new L.Marker(markerLocation,{icon: ico});
-		var marker = new L.Marker(markerLocation);
+		var ico = new icon({"iconUrl": "img/picto_depart.png"});
+		var marker = new L.Marker(markerLocation,{icon: ico});
 		globalGroup.addLayer(marker);
 		var htmlPop="Position de départ";
 		marker.bindPopup(htmlPop);
-		map.setView(markerLocation, 12);		
+		map.setView(markerLocation, 11);		
 }
 
 function drawMarker(tLnglat,type){
@@ -63,15 +70,25 @@ function drawMarker(tLnglat,type){
 		globalGroup.addLayer(marker);		
 		var htmlPop;
 		if(type==1)
-			var htmlPop="Arbre remarquable";
+			htmlPop="Arbre remarquable";
 		marker.bindPopup(htmlPop);
+}
+
+function drawPolygon(tab,type){
+	var polygon = L.polygon(tab);
+	globalGroup.addLayer(polygon);
+	var htmlPop="polygone";
+	polygon.bindPopup(htmlPop);
 }
 
 function visu_map(tab){
 	//console.log("visu_map:" + tab);	
 	for(i in tab){
 		//console.log(tab[i].geometry.coordinates);
-		drawMarker(tab[i].geometry.coordinates,1);
+		if(tab[i].geometry_full.type == "Point")
+			drawMarker(tab[i].geometry_full.coordinates,1);
+		else if(tab[i].geometry.type == "Polygon")
+			drawPolygon(tab[i].geometry_full.coordinates,1);
 	}
 }
 
@@ -87,5 +104,5 @@ $(document).ready(function () {
 	
 	map.setView(mapCenter, zoom);	
 	map.addLayer(globalGroup);		
-	
+
 });
