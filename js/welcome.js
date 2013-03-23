@@ -16,6 +16,11 @@ function show_welcome() {
         var template_welcome = $(templates).filter('#template-welcome').html();
         $('body').append(Mustache.render(template_welcome, template_data));
     });
+	
+	
+	/////////////
+	// MAP
+	
 }
 
 

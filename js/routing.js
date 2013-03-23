@@ -1,7 +1,7 @@
 $(document).ready(function() {
 
 Path.map("#!/welcome").to(function(){
-    show_welcome();
+    //show_welcome();
 });
 
 Path.map("#!/filegroups/:filter/:offset/:limit").to(function(){
