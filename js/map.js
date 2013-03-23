@@ -43,7 +43,6 @@ var geojsonFeature = {
 
 function locateStart(loc){
 		tPos=loc.split(",");
-		console.log(tPos);
 		var markerLocation = new L.LatLng(parseFloat(tPos[0]), parseFloat(tPos[1]));
 		
 		//var ico = new smallIcon({"iconUrl": getIconTraveler(id,"big")});
@@ -55,8 +54,27 @@ function locateStart(loc){
 		map.setView(markerLocation, 12);		
 }
 
-////////
-// INIT
+function drawMarker(tLnglat){
+		var markerLocation = new L.LatLng(parseFloat(tLnglat[1]), parseFloat(tLnglat[0]));
+		
+		//var ico = new smallIcon({"iconUrl": getIconTraveler(id,"big")});
+		//var marker = new L.Marker(markerLocation,{icon: ico});
+		var marker = new L.Marker(markerLocation);
+		globalGroup.addLayer(marker);
+		console.log(tLnglat);
+}
+
+function visu_map(tab){
+	//console.log("visu_map:" + tab);	
+	for(i in tab){
+		//console.log(tab[i].geometry.coordinates);
+		drawMarker(tab[i].geometry.coordinates);
+	}
+}
+
+
+////////////
+// MAP INIT
 $(document).ready(function () {
 	map = new L.Map('map');	
 	L.tileLayer('http://{s}.tile.cloudmade.com/dcc40974a7de424fb339ecfb2ac4abcd/997/256/{z}/{x}/{y}.png', {
@@ -65,14 +83,6 @@ $(document).ready(function () {
 	}).addTo(map);
 	
 	map.setView(mapCenter, zoom);	
-	map.addLayer(globalGroup);	
-	
-	$('#ville').typeahead([{
-		name: 'name_startsWith',
-		//remote: 'http://ws.geonames.org/searchJSON?name_startsWith=%QUERY&country=FR&maxRows=5',
-		//remote: 'http://where.yahooapis.com/v1/places$and(.q(%27%QUERY%2A%27),.type(7,13,17,35,22,8,9,10));start=0;count=5?callback=jQuery16203688858179342681_1364054894846&appid=VlAN70jV34Eofr3ZwEACpwYRoRVCYEXuHHf_maptgJdfwpcqw6g8w1ht5OJo7m7G&format=json&lang=fr&_=1364054898558',
-		template: '<p>{{places}}</p>',
-		engine: Hogan
-	}]);
+	map.addLayer(globalGroup);		
 	
 });

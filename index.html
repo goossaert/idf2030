@@ -8,6 +8,7 @@
 	
 	<!-- css -->
 	<link href="css/typeahead.css" rel="stylesheet" media="screen">
+	<link href="css/main.css" rel="stylesheet" media="screen">
     <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
 	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.css" />
 	<!--[if lte IE 8]>
@@ -31,10 +32,6 @@
     <script type="text/javascript" src="js/autocomplete.js"></script>
     <script type="text/javascript" src="js/routing.js"></script>
     <script type="text/javascript" src="js/map.js"></script>
-
-	<style>
-		#map { height: 500px; width: 500px; }
-	</style>
 	
 	<script>
 		var loc="";//contient les coordonnées du point de départ
@@ -46,7 +43,6 @@
 		  {
 			loc = position.coords.latitude + "," +position.coords.longitude;
 			$("input#gps").val(loc);
-			console.log(loc);
 		  });
 		}
 		else
@@ -55,10 +51,21 @@
 				
 		//INIT
 		$(document).ready(function(){
+			//autocomplete
+			$('#ville').typeahead([{
+				name: 'name_startsWith',
+				//remote: 'http://ws.geonames.org/searchJSON?name_startsWith=%QUERY&country=FR&maxRows=5',
+				template: '<p>{{places}}</p>',
+				engine: Hogan
+			}]);		
+		
+			//event handlers
 			$("a#go").click(function(e){
 				console.log("begin");
 				locateStart(loc);
 				//appel fonction recup de data
+				t=loc.split(",");
+				get_data(t[0], t[1], 100000, 10, visu_map);
 			});
 		});
 	</script>	
