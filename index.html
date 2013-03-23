@@ -1,6 +1,8 @@
 <!DOCTYPE HTML>
 <html>
 <head>
+	<meta charset="UTF-8" />
+
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
 
@@ -8,7 +10,11 @@
     </style>
 
     <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
-
+	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.css" />
+	<!--[if lte IE 8]>
+		<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.ie.css" />
+	<![endif]-->
+	
     <!--
     External javascript libraries
     -->
@@ -18,13 +24,36 @@
     <script type="text/javascript" src="js/path.js"></script>
     <script type="text/javascript" src="js/mustache.js"></script>
 
+	 <script src="http://cdn.leafletjs.com/leaflet-0.5/leaflet.js"></script>
+	
+
     <!--
     Javascript
     -->
     <script type="text/javascript" src="js/data.js"></script>
     <script type="text/javascript" src="js/routing.js"></script>
+    <script type="text/javascript" src="js/map.js"></script>
 
-
+	<style>
+		#map { height: 500px; width: 500px; }
+	</style>
+	
+	<script>
+		var loc="";//contient les coordonnées du point de départ
+		
+		if (navigator.geolocation)
+		{
+		  navigator.geolocation.getCurrentPosition(function(position)
+		  {
+			loc = position.coords.latitude + "," +position.coords.longitude;
+			$("input#gps").val(loc);
+			console.log(loc);
+		  });
+		}
+		else
+		  alert("Votre navigateur ne prend pas en compte la géolocalisation HTML5");
+		  		
+	</script>	
 
 </head>
 <body>
@@ -34,15 +63,17 @@
 
 <div class="container-fluid">
 
-
     <!--Body content-->
     <div id="content">
 	
 		<h1>Map</h1>
 	
-		<div id="#map"></div>
+		<input type="text" id="ville" placeholder="Entrez une ville..." />
+		
+		<input type="text" id="gps" placeholder="Coordonnées GPS" />
 	
-	
+		<div id="map"></div>
+		
     </div>
 
 </div>
