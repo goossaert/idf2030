@@ -10,7 +10,7 @@
 	<link href="css/typeahead.css" rel="stylesheet" media="screen">
 	<link href="css/main.css" rel="stylesheet" media="screen">
     <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
-	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.css" />
+	<link href="css/leaflet.css" rel="stylesheet" media="screen">
 	<!--[if lte IE 8]>
 		<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.ie.css" />
 	<![endif]-->
@@ -24,6 +24,9 @@
     <script type="text/javascript" src="js/path.js"></script>
     <script type="text/javascript" src="js/mustache.js"></script>
 	<script src="http://cdn.leafletjs.com/leaflet-0.5/leaflet.js"></script>	
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/bootstrap-typeahead.js"></script>
+    <script src="js/hogan.js"></script>
 
     <!--
     Javascript
@@ -42,7 +45,7 @@
 		  navigator.geolocation.getCurrentPosition(function(position)
 		  {
 			loc = position.coords.latitude + "," +position.coords.longitude;
-			$("#gps").val(loc);
+			$("input#gps").val(loc);
 		  });
 		}
 		else
@@ -52,12 +55,6 @@
 		//INIT
 		$(document).ready(function(){
 			//autocomplete
-			$('#ville').typeahead([{
-				name: 'name_startsWith',
-				//remote: 'http://ws.geonames.org/searchJSON?name_startsWith=%QUERY&country=FR&maxRows=5',
-				template: '<p>{{places}}</p>',
-				engine: Hogan
-			}]);		
 		
 			//event handlers
 			$("a#go").click(function(e){
@@ -82,35 +79,21 @@
 	
 		<h1>Map</h1>
 	
-		<input type="text" name="ville" id="ville" placeholder="Entrez une ville..." />
+        <input class="typeahead" type="text" placeholder="Ville" />
 		
-		<input type="text" name="gps" id="gps" placeholder="Coordonnées GPS" />
-		
+		<input type="text" id="gps" placeholder="Coordonnées GPS" />
+
 		<input type="text" name="distance" id="distance" value="1000" />
 	
 		<a href="#" id="go">Go !</a>
 	
 		<div id="map"></div>
 		
-	    <input type="text" class="span3" style="margin: 0 auto;" data-provide="typeahead" data-items="4" data-source='["Alabama","Alaska","Arizona","Arkansas","California","Colorado","Connecticut","Delaware","Florida","Georgia","Hawaii","Idaho","Illinois","Indiana","Iowa","Kansas","Kentucky","Louisiana","Maine","Maryland","Massachusetts","Michigan","Minnesota","Mississippi","Missouri","Montana","Nebraska","Nevada","New Hampshire","New Jersey","New Mexico","New York","North Dakota","North Carolina","Ohio","Oklahoma","Oregon","Pennsylvania","Rhode Island","South Carolina","South Dakota","Tennessee","Texas","Utah","Vermont","Virginia","Washington","West Virginia","Wisconsin","Wyoming"]'>
 
-        <div class="autocomplete-cities">
-            <input class="typeahead" type="text" placeholder="Ville">
-        </div>
-
-        <br>
-        <br>
-        <br>
-        <br>
         <br>
     </div>
 
 </div>
-
-
-<script src="js/bootstrap.min.js"></script>
-<script src="js/typeahead.js"></script>
-<script src="js/hogan.js"></script>
 
 </body>
 </html>

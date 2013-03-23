@@ -1,12 +1,32 @@
 
 $(document).ready(function() {
 
-$('.autocomplete-cities .typeahead').typeahead({
-  name: 'countries',                                                          
-  /*prefetch: 'http://twitter.github.com/typeahead.js/data/countries.json',*/
-  local: ['hello', 'good bye'],
-  limit: 10                                                                   
+var cities =  [ 
+                { "name": "Paris 14e Arrondissement", "value": "Paris 14e Arrondissement", "geometry": "(48.829275, 2.326618)" },
+                { "name": "Boulogne-Billancourt", "value": "Boulogne-Billancourt", "geometry": "(48.836425, 2.239079)" }
+              ];
+
+var cities_map = {};
+var cities_names = [];
+
+$.each(cities, function (i, city) {
+    cities_map[city.name] = city;
+    cities_names.push(city.name);
 });
 
+
+$('.typeahead').typeahead(
+  {
+    name: 'cities',
+    source: function (query, process) {
+        process(cities_names);
+    },
+
+    updater: function(city_name){
+        console.log("hello - You selected: " + JSON.stringify(cities_map[city_name], null, 2));
+        return city_name;
+    }
+  }
+);
 
 });

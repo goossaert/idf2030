@@ -1,11 +1,16 @@
 $(document).ready(function() {
 
+function testdata(ret)
+{
+
+}
+
 Path.map("#!/welcome").to(function(){
     //show_welcome();
 });
 
 Path.map("#!/data").to(function(){
-    data_out = get_data(48.85676, 2.35099, 100000);
+    data_out = get_data(48.85676, 2.35099, 100000, 10, testdata);
     //48.8520930694,2.34738897685,1000
 });
 
