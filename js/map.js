@@ -49,26 +49,29 @@ function locateStart(loc){
 		//var marker = new L.Marker(markerLocation,{icon: ico});
 		var marker = new L.Marker(markerLocation);
 		globalGroup.addLayer(marker);
-		//var htmlPop=genPopUpHtml(id,"current",0);
-		//marker.bindPopup(htmlPop);
+		var htmlPop="Position de départ";
+		marker.bindPopup(htmlPop);
 		map.setView(markerLocation, 12);		
 }
 
-function drawMarker(tLnglat){
+function drawMarker(tLnglat,type){
 		var markerLocation = new L.LatLng(parseFloat(tLnglat[1]), parseFloat(tLnglat[0]));
 		
 		//var ico = new smallIcon({"iconUrl": getIconTraveler(id,"big")});
 		//var marker = new L.Marker(markerLocation,{icon: ico});
 		var marker = new L.Marker(markerLocation);
-		globalGroup.addLayer(marker);
-		console.log(tLnglat);
+		globalGroup.addLayer(marker);		
+		var htmlPop;
+		if(type==1)
+			var htmlPop="Arbre remarquable";
+		marker.bindPopup(htmlPop);
 }
 
 function visu_map(tab){
 	//console.log("visu_map:" + tab);	
 	for(i in tab){
 		//console.log(tab[i].geometry.coordinates);
-		drawMarker(tab[i].geometry.coordinates);
+		drawMarker(tab[i].geometry.coordinates,1);
 	}
 }
 
