@@ -1,7 +1,7 @@
 
 var API_URL = 'http://datastore.opendatasoft.com/iledefrance2030/api/records/1.0/search';
 
-function get_data(x, y, distance, num_rows) {
+function get_data(x, y, distance, num_rows, show_in_map) {
     // x: GPS x
     // y: GPS y
     // distance: distance around (x,y) in meters
@@ -11,7 +11,7 @@ function get_data(x, y, distance, num_rows) {
     $.ajax({
         url: API_URL,
         type: "GET",
-        cache: false,
+        //cache: false,
         data: {'format': 'json',
                'rows': num_rows,
                'pretty_print': true,
@@ -24,19 +24,21 @@ function get_data(x, y, distance, num_rows) {
         },
         success: function (data) {
             //console.log(JSON.stringify(data, null, 2));
+            var data_out = [];
             var i = 0;
-            data_out = [];
             for (i = 0; i < data['records'].length; i++) {
                 poi = {'name': data['records'][i]['fields']['nom'],
-                       'geom_x': data['records'][i]['fields']['geom_x_y'][0],
-                       'geom_y': data['records'][i]['fields']['geom_x_y'][1],
+                       'geometry': data['records'][i]['geometry'],
                        'comment': data['records'][i]['fields']['com']
                       };
                 data_out.push(poi);
             }
-            console.log(JSON.stringify(data_out, null, 2));
+            show_in_map(data_out);
+            //console.log(JSON.stringify(data_out, null, 2));
         }
     });
+
+
 
 }
 

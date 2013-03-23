@@ -5,7 +5,7 @@ Path.map("#!/welcome").to(function(){
 });
 
 Path.map("#!/data").to(function(){
-    get_data(48.85676, 2.35099, 100000);
+    data_out = get_data(48.85676, 2.35099, 100000);
     //48.8520930694,2.34738897685,1000
 });
 
