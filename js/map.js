@@ -38,40 +38,22 @@ var geojsonFeature = {
     }
 };
 
-var test = {
-            "type": "Feature",
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    "2.362406",
-                    "48.896028"
-                ]
-            },
-            "properties": {
-                "domain": "iledefrance2030",
-                "nom_zone": "La Chapelle",
-                "dist": "5012",
-                "centre_y": "6866413.2995",
-                "sbt": "10",
-                "sdispo": "0",
-                "cle": "La Chapelle75000",
-                "creation": "1950",
-                "transp": "Route - Fer",
-                "visibility": "domain",
-                "geom_x_y": [
-                    "48.896028",
-                    "2.362406"
-                ],
-                "geom_name": "POINT",
-                "geom": "{ \"type\": \"Point\", \"coordinates\": [ 2.36240648749095, 48.896028028616769 ] }",
-                "com": "PARIS",
-                "typo": "3",
-                "centre_x": "653253.2872",
-                "numro": "132",
-                "type": "BL",
-                "insee": "75000"
-            }
-};
+//////////////
+// FUNCTIONS
+
+function locateStart(loc){
+		tPos=loc.split(",");
+		console.log(tPos);
+		var markerLocation = new L.LatLng(parseFloat(tPos[0]), parseFloat(tPos[1]));
+		
+		//var ico = new smallIcon({"iconUrl": getIconTraveler(id,"big")});
+		//var marker = new L.Marker(markerLocation,{icon: ico});
+		var marker = new L.Marker(markerLocation);
+		globalGroup.addLayer(marker);
+		//var htmlPop=genPopUpHtml(id,"current",0);
+		//marker.bindPopup(htmlPop);
+		map.setView(markerLocation, 12);		
+}
 
 ////////
 // INIT
@@ -84,5 +66,13 @@ $(document).ready(function () {
 	
 	map.setView(mapCenter, zoom);	
 	map.addLayer(globalGroup);	
+	
+	$('#ville').typeahead([{
+		name: 'name_startsWith',
+		//remote: 'http://ws.geonames.org/searchJSON?name_startsWith=%QUERY&country=FR&maxRows=5',
+		//remote: 'http://where.yahooapis.com/v1/places$and(.q(%27%QUERY%2A%27),.type(7,13,17,35,22,8,9,10));start=0;count=5?callback=jQuery16203688858179342681_1364054894846&appid=VlAN70jV34Eofr3ZwEACpwYRoRVCYEXuHHf_maptgJdfwpcqw6g8w1ht5OJo7m7G&format=json&lang=fr&_=1364054898558',
+		template: '<p>{{places}}</p>',
+		engine: Hogan
+	}]);
 	
 });

@@ -5,10 +5,9 @@
 
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
-
-    <style media="screen" type="text/css">
-    </style>
-
+	
+	<!-- css -->
+	<link href="css/typeahead.css" rel="stylesheet" media="screen">
     <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
 	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.css" />
 	<!--[if lte IE 8]>
@@ -23,9 +22,7 @@
     <script type="text/javascript" src="js/jquery.qtip-1.0.0-rc3.min.js"></script>
     <script type="text/javascript" src="js/path.js"></script>
     <script type="text/javascript" src="js/mustache.js"></script>
-
-	 <script src="http://cdn.leafletjs.com/leaflet-0.5/leaflet.js"></script>
-	
+	<script src="http://cdn.leafletjs.com/leaflet-0.5/leaflet.js"></script>	
 
     <!--
     Javascript
@@ -41,7 +38,8 @@
 	
 	<script>
 		var loc="";//contient les coordonnées du point de départ
-		
+				
+		//GEOLOC
 		if (navigator.geolocation)
 		{
 		  navigator.geolocation.getCurrentPosition(function(position)
@@ -54,13 +52,21 @@
 		else
 		  alert("Votre navigateur ne prend pas en compte la géolocalisation HTML5");
 		  		
+				
+		//INIT
+		$(document).ready(function(){
+			$("a#go").click(function(e){
+				console.log("begin");
+				locateStart(loc);
+				//appel fonction recup de data
+			});
+		});
 	</script>	
 
 </head>
 <body>
 
 <div style="clear: both;"></div>
-
 
 <div class="container-fluid">
 
@@ -72,6 +78,8 @@
 		<input type="text" id="ville" placeholder="Entrez une ville..." />
 		
 		<input type="text" id="gps" placeholder="Coordonnées GPS" />
+	
+		<a href="#" id="go">Go !</a>
 	
 		<div id="map"></div>
 		
@@ -91,10 +99,10 @@
 </div>
 
 
-
-
-
 <script src="js/bootstrap.min.js"></script>
+<script src="js/typeahead.js"></script>
+<script src="js/hogan.js"></script>
+
 </body>
 </html>
 
