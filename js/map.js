@@ -9,44 +9,77 @@ var mapCenter = new L.LatLng(48.8436355,2.3171283);
 var zoom=10;	
 var map;//à declarer ici sinon IE bug
 
+var iconDepart = L.Icon.extend({
+    options:{
+		iconUrl: 'img/picto_depart.png',//constructeur
+		iconiSize: new L.Point(150, 205),
+		iconAnchor: new L.Point(75, 205),
+		popupAnchor: new L.Point(0, -205)
+	}
+});
+
 var icon = L.Icon.extend({
     options:{
 		iconUrl: '',//constructeur
-		iconiSize: new L.Point(120, 160),
-		iconAnchor: new L.Point(60, 160),
+		iconiSize: new L.Point(160, 180),
+		iconAnchor: new L.Point(80, 180),
 		popupAnchor: new L.Point(0, -160)
 	}
 });
 
-//TMP
-var polygon = L.polygon([
-    [51.509, -0.08],
-    [52.503, -5.06],
-    [0.51, -10.047]
-]);
 
-var geojsonFeature = {
-    "type": "Feature",
-    "properties": {
-        "name": "Coors Field",
-        "amenity": "Baseball Stadium",
-        "popupContent": "This is where the Rockies play!"
-    },
-    "geometry": {
-        "type": "Point",
-        "coordinates": [-104.99404, 39.75621]
-    }
-};
 
 //////////////
 // FUNCTIONS
 
 function getIconFromType(type){
-	if(type==1){
-		return "img/
-	}else if(type==2){
-	
+	if(type=="secteur_extension"){
+		return "img/picto_chantier.png";
+	}else if(type=="eau"){
+		return "img/picto_eau.png";
+	}else if(type=="parc"){
+		return "img/picto_foret.png";
+	}else if(type=="foret"){
+		return "img/picto_foret.png";
+	}else{
+		return "";
 	}
+}
+
+function getColorFromType(type){
+	if(type=="secteur_extension"){
+		return "#E6511E";
+	}else if(type=="eau"){
+		return "#5DBFC3";
+	}else if(type=="parc"){
+		return "#36A862";
+	}else if(type=="foret"){
+		return "#36A862";
+	}else{
+		return "";
+	}
+}
+
+function genPop(type){
+	if(type=="secteur_extension"){
+		return "Secteur d'extension";
+	}else if(type=="eau"){
+		return "Point d'eay";
+	}else if(type=="parc"){
+		return "Parc";
+	}else if(type=="foret"){
+		return "Foret";
+	}else{
+		return "";
+	}
+}
+
+function tabReverse(t){
+	var ret=[];
+	for(i in t)
+		ret.push([t[i][1],t[i][0]]);
+		
+	return ret;
 }
 
 function locateStart(loc){
@@ -64,31 +97,25 @@ function locateStart(loc){
 function drawMarker(tLnglat,type){
 		var markerLocation = new L.LatLng(parseFloat(tLnglat[1]), parseFloat(tLnglat[0]));
 		
-		//var ico = new smallIcon({"iconUrl": getIconTraveler(id,"big")});
-		//var marker = new L.Marker(markerLocation,{icon: ico});
-		var marker = new L.Marker(markerLocation);
+		var ico = new icon({"iconUrl": getIconFromType(type)});
+		var marker = new L.Marker(markerLocation,{icon: ico});
 		globalGroup.addLayer(marker);		
-		var htmlPop;
-		if(type==1)
-			htmlPop="Arbre remarquable";
+		var htmlPop=genPop(type);
 		marker.bindPopup(htmlPop);
 }
 
 function drawPolygon(tab,type){
-	var polygon = L.polygon(tab);
+	var color=getColorFromType(type);
+	var polygon = L.polygon(tabReverse(tab[0]),{fillColor: color, color: color});
 	globalGroup.addLayer(polygon);
-	var htmlPop="polygone";
-	polygon.bindPopup(htmlPop);
 }
 
 function visu_map(tab){
-	//console.log("visu_map:" + tab);	
 	for(i in tab){
-		//console.log(tab[i].geometry.coordinates);
-		if(tab[i].geometry_full.type == "Point")
-			drawMarker(tab[i].geometry_full.coordinates,1);
-		else if(tab[i].geometry.type == "Polygon")
-			drawPolygon(tab[i].geometry_full.coordinates,1);
+		console.log(tab[i].name);
+		drawMarker(tab[i].geometry.coordinates,tab[i].type);
+		if(tab[i].geometry_full.type == "Polygon")
+			drawPolygon(tab[i].geometry_full.coordinates,tab[i].type);
 	}
 }
 
@@ -104,5 +131,5 @@ $(document).ready(function () {
 	
 	map.setView(mapCenter, zoom);	
 	map.addLayer(globalGroup);		
-
+	
 });

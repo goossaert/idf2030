@@ -84,7 +84,7 @@ function get_data(x, y, distance, num_rows, show_in_map) {
                 data_out.push(poi);
             }
             show_in_map(data_out);
-            console.log(JSON.stringify(data_out, null, 2));
+            //console.log(JSON.stringify(data_out, null, 2));
         }
     });
 
@@ -128,7 +128,7 @@ function get_data(x, y, distance, num_rows, show_in_map) {
                 data_out.push(poi);
             }
             show_in_map(data_out);
-            console.log(JSON.stringify(data_out, null, 2));
+            //console.log(JSON.stringify(data_out, null, 2));
         }
     });
 
