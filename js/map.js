@@ -114,7 +114,7 @@ function genPop(type,gps,data){
 	
 	alerteBrigand="<span style='color: green'>Brigand futé vert. Vous pouvez y aller !</span>";
 	if((data.length == 1 && data[0].distance_to_poi < 1500)){
-		alerteBrigand="<span style='color: orange'>Attention 1 point de dangerà "+Math.floor(data[0].distance_to_poi)+"m</span>";
+		alerteBrigand="<span style='color: orange'>Attention 1 point de danger à "+Math.floor(data[0].distance_to_poi)+"m</span>";
 	}else if(data.length == 2){
 			if(data[0].distance_to_poi < 1500 && data[1].distance_to_poi < 1500)
 				alerteBrigand="<span style='color: red'>Attention 2 points de danger à "+Math.floor(data[0].distance_to_poi)+"m et "+Math.floor(data[1].distance_to_poi)+"m</span>";
