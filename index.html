@@ -14,6 +14,7 @@
 	<!--[if lte IE 8]>
 		<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.ie.css" />
 	<![endif]-->
+	<!--<meta name = "viewport" content = "width = 320, initial-scale = 1.0, user-scalable = no">-->
 	
     <!--
     External javascript libraries
@@ -80,6 +81,7 @@
 			});
 			$("div#newLoc a").click(function(e){
 				globalGroup.clearLayers();
+				globalRoutes.clearLayers();
 				map.closePopup();
 				map.setView(mapCenter, zoom);
 				$("section#content nav").show();
@@ -91,6 +93,13 @@
 					$("nav#nav-"+$(this).data("menu")).show();
 				}
 			});
+			$("div#logo a").click(function(e){
+				globalGroup.clearLayers();
+				globalRoutes.clearLayers();			
+				$("nav").hide();
+				$("div#newLoc").hide();
+				$("div#menu").show();
+			});
 		});
 	</script>	
 
@@ -101,7 +110,7 @@
 <section id="content">
 
 	<div id="logo">
-		<img src="img/logo_bf.png" alt="logo" />
+		<a href="#"><img src="img/logo_bf.png" alt="logo" /></a>
 	</div>
 
 	<nav id="nav-1">
