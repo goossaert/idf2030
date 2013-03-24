@@ -45,14 +45,13 @@ function get_itinerary(x_start, y_start, x_end, y_end, show_in_map) {
 
 
 
-function get_data(x, y, distance, num_rows, show_in_map) {
+function get_data_magot(x, y, distance, num_rows, show_in_map) {
     // x: GPS x
     // y: GPS y
     // distance: distance around (x,y) in meters
     // num_rows: number of POIs to return (-1 for unlimited)
-    console.log('get_data()');
+    console.log('get_data_magot()');
 
-    /*
     $.ajax({
         url: API_URL,
         type: "GET",
@@ -72,9 +71,13 @@ function get_data(x, y, distance, num_rows, show_in_map) {
             var data_out = [];
             var i = 0;
             for (i = 0; i < data['records'].length; i++) {
+                data_out.push(poi);
                 poi = {'name': data['records'][i]['fields']['nom'],
+                       'distance': data['records'][i]['fields']['dist'],
                        'geometry': data['records'][i]['geometry'],
-                       'comment': data['records'][i]['fields']['com']
+                       'geometry_full': data['records'][i]['geometry'],
+                       'comment': data['records'][i]['fields']['com'],
+                       'type': 'arbre'
                       };
                 data_out.push(poi);
             }
@@ -82,8 +85,82 @@ function get_data(x, y, distance, num_rows, show_in_map) {
             //console.log(JSON.stringify(data_out, null, 2));
         }
     });
-    */
+}
 
+
+
+function get_data_autolib(x, y, distance, num_rows, show_in_map) {
+    // x: GPS x
+    // y: GPS y
+    // distance: ignored
+    // num_rows: number of POIs to return (-1 for unlimited)
+    console.log('get_data_autolib() ' + x + ' ' + y);
+
+    $.ajax({
+        url: 'http://open-api.madebymonsieur.com/autolib/closest',
+        //url: 'http://open-api.madebymonsieur.com/autolib/closest?lon=2.3360819&lat=48.8243977&accept=application/json&limit=1',
+        type: "GET",
+        cache: false,
+        data: {
+                'lon': y,
+               'lat': x,
+               'limit': num_rows,
+               'accept': 'application/json'},
+        async: false,
+        dataType:'jsonp',
+        error: function(jqXHR, exception) {
+            console.log('error autolib: ' + jqXHR.status);
+            console.log(jqXHR.statusText);
+            console.log(jqXHR.responseText);
+            var responseText = jQuery.parseJSON(jqXHR.responseText);
+            console.log(responseText);
+        },
+        success: function (data) {
+            console.log(JSON.stringify(data, null, 2));
+            /*
+            var data_out = [];
+            var i = 0;
+            for (i = 0; i < data.length; i++) {
+                data_out.push(poi);
+                geometry = {
+                      "type": "Point",
+                      "coordinates": [
+                      '' + data['loc']['lon'],
+                      '' + data['loc']['lat']
+                      ] };
+
+                poi = {'name': data['name'],
+                       'distance': data['dist'],
+                       'geometry': geometry,
+                       'geometry_full': geometry,
+                       'comment': null,
+                       'type': 'autolib'
+                      };
+                data_out.push(poi);
+            }
+            show_in_map(data_out);
+            console.log(JSON.stringify(data_out, null, 2));
+            */
+        }
+    });
+}
+
+
+
+
+
+
+
+
+
+
+
+function get_data(x, y, distance, num_rows, show_in_map) {
+    // x: GPS x
+    // y: GPS y
+    // distance: distance around (x,y) in meters
+    // num_rows: number of POIs to return (-1 for unlimited)
+    console.log('get_data()');
 
     // http://datastore.opendatasoft.com/iledefrance2030/explore/dataset/idf_CDGT2012_SecteurExtension
     $.ajax({
@@ -281,7 +358,7 @@ function danger_around(lat, lon) {
         }
     }
 
-    console.log('pois_best: ' + JSON.stringify(pois_out));
+    //console.log('pois_best: ' + JSON.stringify(pois_out));
     return pois_out;
 }
 
