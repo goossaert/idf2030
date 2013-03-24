@@ -38,34 +38,48 @@
 	
 	<script>
 		var loc="";//contient les coordonnées du point de départ
+  		var distance=10000;
+		var nb_res=5;
+		
+		function start_search(pos){
+			console.log("begin");
+			if(pos!=0)
+				loc = pos.coords.latitude + "," +pos.coords.longitude;
 				
-		//GEOLOC
-		if (navigator.geolocation)
-		{
-		  navigator.geolocation.getCurrentPosition(function(position)
-		  {
-			loc = position.coords.latitude + "," +position.coords.longitude;
-			$("input#gps").val(loc);
-			//=> on peut lancer le getdata direct
-		  });
+			$("section#content nav").hide();
+			$("div#newLoc").show();
+			
+			locateStart(loc);
+			t=loc.split(",");
+			get_data(t[0], t[1], distance, nb_res, visu_map);		
+			
+			//get_itinerary(48.843716, 2.3171895, t[0], t[1], visu_map_itinerary);
 		}
-		else
-		  console.log("Pas de geoloc");
-		  		
-				
+		
 		//INIT
 		$(document).ready(function(){
 			//event handlers
-			$("a#go").click(function(e){
-				console.log("begin");
-				$("section#content nav").toggle();
-				locateStart(loc);
-				//appel fonction recup de data
-				t=loc.split(",");
-				//get_data(t[0], t[1], $("#distance").val(), 100, visu_map);
-				get_data(t[0], t[1], $("#distance").val(), 10, visu_map);
-				get_itinerary(48.843716, 2.3171895, t[0], t[1], visu_map_itinerary);
+			$("section#content nav div#toolsNav a.geoloc").click(function(e){
+				if (navigator.geolocation)
+				{
+				  navigator.geolocation.getCurrentPosition(function(position)
+				  {
+					start_search(position);
+				  });
+				}
+				else
+				  alert("Geolocalisation on disponible");			
 			});
+			$("section#content nav div#toolsNav a.ok").click(function(e){
+				start_search(0);
+			});
+			$("div#newLoc a").click(function(e){
+				globalGroup.clearLayers();
+				map.closePopup();
+				map.setView(mapCenter, zoom);
+				$("section#content nav").show();
+				$("div#newLoc").hide();
+			});			
 		});
 	</script>	
 
@@ -75,15 +89,33 @@
 <!--Body content-->
 <section id="content">
 
-	<h1>Titre</h1>
+	<div id="logo">
+		<img src="img/logo_bf.png" alt="logo" />
+	</div>
 
 	<nav>
-		<input class="typeahead" type="text" placeholder="Ville" value="" />		
-		<input type="text" id="gps" placeholder="Coordonnées GPS" value="" />
-		<input type="text" name="distance" id="distance" value="100000" value="" />		
-		<a href="#" id="go">Go !</a>
+		<div id="logoNav">
+			<img src="img/mode_bonDebarras.png" alt="mode" />
+		</div>
+		<div id="toolsNav">
+			<div id="logoDepart">
+				<img src="img/couteau_mini.png" alt="mode" />
+			</div>
+			Position de départ
+			<a class="geoloc" href="#">Géolocalisation</a>
+			<label for="ville">Commune</label>
+			<input class="typeahead" type="text" placeholder="Ville" value="" />
+			<a class="ok" href="#" id="go">Ok</a>
+		</div>
+		<div class="spacer"></div>
 	</nav>
 
+	<div id="newLoc">
+		<a href="#">
+			<img src="img/bonDebarras_newLoc.png" alt="newloc" />
+		</a>
+	</div>
+	
 	<div id="map"></div>
 	
 </section>
