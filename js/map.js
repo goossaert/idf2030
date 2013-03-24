@@ -222,9 +222,27 @@ function drawPolyline(line) {
 
 
 function visu_map(tab){
+	var nchantier=0;
+	var neau=0;
+	var nforet=0;
+
 	for(i in tab){
 		//console.log(tab[i].name);
 		getClosePolice(tab[i].geometry.coordinates[1],tab[i].geometry.coordinates[0]);
+		
+		if(tab[i].type=="secteur_extension"){
+			nchantier++;
+			if(nchantier > 3)
+				continue;
+		}else if(tab[i].type=="eau"){
+			neau++;
+			if(neau > 3)
+				continue;			
+		}else if(tab[i].type=="parc" || tab[i].type=="foret"){
+			nforet++;
+			if(nforet > 3)
+				continue;			
+		}
 		
 		drawMarker(tab[i].geometry.coordinates,tab[i].type);		
 		if(tab[i].geometry_full.type == "Polygon")
