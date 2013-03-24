@@ -50,7 +50,7 @@ function get_data(x, y, distance, num_rows, show_in_map) {
     // y: GPS y
     // distance: distance around (x,y) in meters
     // num_rows: number of POIs to return (-1 for unlimited)
-    console.log('get_data()');
+    //console.log('get_data()');
 
     /*
     $.ajax({
@@ -179,7 +179,7 @@ function get_osm_query(lat, lng, key, value){
 	var query='<osm-script output="json"><query type="node"><has-kv k="'+ key +'" v="'+ value +'"/><bbox-query e="'+e+'" n="'+n+'" s="'+s+'" w="'+w+'"/></query><print/></osm-script>'
 	var url='http://overpass-api.de/api/interpreter?data='+encodeURIComponent(query);
 	
-	console.log(url);
+	//console.log(url);
     return url;
 }
 
@@ -187,7 +187,7 @@ function get_osm_query(lat, lng, key, value){
 
 
 function load_osm_data(lat, lng, key, value) {
-    console.log('get_osm_amenity() + ' + key + ' ' + value);
+    //console.log('get_osm_amenity() + ' + key + ' ' + value);
     url = get_osm_query(lat, lng, key, value);
 
     ajax = $.ajax({
@@ -281,7 +281,7 @@ function danger_around(lat, lon) {
         }
     }
 
-    console.log('pois_best: ' + JSON.stringify(pois_out));
+    //console.log('pois_best: ' + JSON.stringify(pois_out));
     return pois_out;
 }
 
