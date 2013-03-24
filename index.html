@@ -59,8 +59,8 @@
             a1 = load_osm_data(t[0], t[1], 'tourism', 'attraction');
 
             $.when( a0, a1 ).then(function(data, textStatus, jqXHR){
-                console.log('Done with OSM');
-                console.log(JSON.stringify(pois_danger, null, 2));
+                //console.log('Done with OSM');
+                //console.log(JSON.stringify(pois_danger, null, 2));
                 danger_around(t[0], t[1]);
             });
 

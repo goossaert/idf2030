@@ -204,7 +204,6 @@ function load_osm_data(lat, lng, key, value) {
             //console.log(JSON.stringify(data, null, 2));
             //show_in_map(data_out);
             //console.log(JSON.stringify(data_out, null, 2));
-            var data_out = [];
 
             var i = 0;
             for (i = 0; i < data['elements'].length; i++) {
@@ -242,7 +241,6 @@ function load_osm_data(lat, lng, key, value) {
                        'comment': comment,
                        'type': type
                       };
-                data_out.push(poi);
                 pois_danger.push(poi);
             }
         }
@@ -253,11 +251,6 @@ function load_osm_data(lat, lng, key, value) {
 
 
 function danger_around(lat, lon) {
-    var i = 0; 
-    var i_best = 0;
-    var distance_best = 10000000000;
-    var distance = 0;
-    pois_list = pois_danger;
 
     types = { 
                 'tourism': {'distance_best': 10000000000, 'i_best': 0, 'found': false},
@@ -265,6 +258,9 @@ function danger_around(lat, lon) {
             };
     types_name = ['tourism', 'police'];
 
+    var pois_list = pois_danger;
+    var i = 0; 
+    var distance = 0;
     for (i = 0; i < pois_list.length; i++) {
         type = pois_list[i]['type'];
         distance = distance_gps(lat, lon, pois_list[i]['geometry']['coordinates'][1], pois_list[i]['geometry']['coordinates'][0]) * 1000;
