@@ -14,6 +14,50 @@ function get_geometry_full(record) {
     return geometry_full;
 }
 
+
+function get_itinerary(x_start, y_start, x_end, y_end, show_in_map) {
+
+    // 48.843716,2.3171895,48.817378,2.516992
+    positions = x_start + ',' + y_start + ',' + x_end + ',' + y_end;
+
+    ITINERARY_URL = 'http://navigation.cloudmade.com/dcc40974a7de424fb339ecfb2ac4abcd/api/0.3/'+positions+'/car.js?units=km';
+
+    $.ajax({
+        url: ITINERARY_URL,
+        type: "GET",
+        //cache: false,
+        data: {},
+        async: true,
+        dataType:'jsonp',
+        error: function(jqXHR, exception) {
+            console.log('error');
+        },
+        success: function (data) {
+            //console.log(JSON.stringify(data, null, 2));
+            /*
+            for (i = 0; i < data['records'].length; i++) {
+                poi = {'name': null,
+                       'distance': data['records'][i]['fields']['dist'],
+                       'geometry': data['records'][i]['geometry'],
+                       'geometry_full': get_geometry_full(data['records'][i]),
+                       'comment': null,
+                       'type': 'secteur_extension'
+                      };
+                data_out.push(poi);
+            }
+            */
+            show_in_map(data);
+            //console.log(JSON.stringify(data_out, null, 2));
+        }
+    });
+
+
+
+
+}
+
+
+
 function get_data(x, y, distance, num_rows, show_in_map) {
     // x: GPS x
     // y: GPS y
@@ -121,6 +165,7 @@ function get_data(x, y, distance, num_rows, show_in_map) {
                 poi = {'name': null,
                        'distance': data['records'][i]['fields']['dist'],
                        'geometry': data['records'][i]['geometry'],
+
                        'geometry_full': get_geometry_full(data['records'][i]),
                        'comment': null,
                        'type': type_poi

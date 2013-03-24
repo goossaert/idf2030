@@ -25,7 +25,7 @@ var icon = L.Icon.extend({
 		iconAnchor: new L.Point(80, 180),
 		popupAnchor: new L.Point(0, -160)
 	}
-});
+    });
 
 
 
@@ -134,6 +134,13 @@ function drawPolygon(tab,type){
 	globalGroup.addLayer(polygon);
 }
 
+function drawPolyline(line) {
+	var color = "#36A862";
+    var polyline = new L.Polyline(line);
+	globalGroup.addLayer(polyline);
+}
+
+
 function visu_map(tab){
 	for(i in tab){
 		//console.log(tab[i].name);
@@ -143,6 +150,10 @@ function visu_map(tab){
 		if(tab[i].geometry_full.type == "Polygon")
 			drawPolygon(tab[i].geometry_full.coordinates,tab[i].type);
 	}
+}
+
+function visu_map_itinerary(data) {
+    drawPolyline(data['route_geometry']); 
 }
 
 
