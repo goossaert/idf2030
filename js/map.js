@@ -6,6 +6,7 @@
 //VAR 
 var globalGroup = new L.LayerGroup();	
 var globalRoutes = new L.LayerGroup();
+var globalWarnings = new L.LayerGroup();
 var mapCenter = new L.LatLng(48.8436355,2.3171283);
 var zoom=10;	
 var map;//à declarer ici sinon IE bug
@@ -16,6 +17,15 @@ var iconDepart = L.Icon.extend({
 		iconiSize: new L.Point(150, 205),
 		iconAnchor: new L.Point(75, 205),
 		popupAnchor: new L.Point(0, -205)
+	}
+});
+
+var iconWarning = L.Icon.extend({
+    options:{
+		iconUrl: 'img/picto_attention.png',//constructeur
+		iconiSize: new L.Point(110, 120),
+		iconAnchor: new L.Point(55, 120),
+		popupAnchor: new L.Point(0, -120)
 	}
 });
 
@@ -50,9 +60,6 @@ function deg2rad(deg) {
 
 
 
-
-
-
 //////////////
 // FUNCTIONS
 
@@ -80,7 +87,8 @@ function getColorFromType(type){
 	}
 }
 
-function genPop(type,gps){
+function genPop(type,gps,data){
+	console.log(data);
 	var titre="";
 	var desc="";
 	var tagline="";
@@ -102,10 +110,20 @@ function genPop(type,gps){
 		return "";
 	}
 	
-	html="<div class='popLeft'>"+titre+""+desc+"<aside class='infoBrigand'></aside>"+tagline+"</div>";
+	alerteBrigand="<span style='color: green'>Brigand futé vert. Vous pouvez y aller !</span>";
+	if((data.length == 1 && data[0].distance_to_poi < 1500)){
+		alerteBrigand="<span style='color: orange'>Attention 1 point de dangerà "+Math.floor(data[0].distance_to_poi)+"m</span>";
+	}else if(data.length == 2){
+			if(data[0].distance_to_poi < 1500 && data[1].distance_to_poi < 1500)
+				alerteBrigand="<span style='color: red'>Attention 2 points de danger à "+Math.floor(data[0].distance_to_poi)+"m et "+Math.floor(data[1].distance_to_poi)+"m</span>";
+			else if(data[0].distance_to_poi < 1500 || data[1].distance_to_poi < 1500)
+					alerteBrigand="<span style='color: orange'>Attention 1 point de dangerà "+Math.floor(data[0].distance_to_poi)+"m</span>";
+	}
+	
+	html="<div class='popLeft'>"+titre+""+desc+"<aside class='infoBrigand'>"+alerteBrigand+"</aside>"+tagline+"</div>";
 	html+="<div class='popRight'><span>&gt; Itineraire</span><p>Options</p>"+
 		"<input disabled type='checkbox' name='bricolage' />&nbsp;Magasin de bricolage<br />"+
-		"<input type='checkbox' name='autolib' />&nbsp;Autolib<br />"+
+		"<input disabled type='checkbox' name='autolib' />&nbsp;Autolib<br />"+
 		"<a data-gps='"+gps[1]+","+gps[0]+"' onClick='route(\""+gps[1]+","+gps[0]+"\")' href='#'><img src='img/itineraire.png' alt='' /></a></div>";
 	html+="<div class='spacer'></div>";
 		
@@ -158,15 +176,32 @@ function locateStart(loc){
 }
 
 function drawMarker(tLnglat,type){
-		var markerLocation = new L.LatLng(parseFloat(tLnglat[1]), parseFloat(tLnglat[0]));
-				
+		//marker
+		var markerLocation = new L.LatLng(parseFloat(tLnglat[1]), parseFloat(tLnglat[0]));				
 		var ico = new icon({"iconUrl": getIconFromType(type)});
 		var marker = new L.Marker(markerLocation,{icon: ico});
-		globalGroup.addLayer(marker);		
+		globalGroup.addLayer(marker);				
 		
-		var htmlPop=genPop(type,tLnglat);
+		//recup info warning + maj popup
+		var data = danger_around(tLnglat[1], tLnglat[0]);
+		var htmlPop=genPop(type,tLnglat, data);				
+		marker
+			.bindPopup(htmlPop,{minWidth: 450,maxWidth: 500})
+			.on('click', function (e) {	drawMarkerWarning(data); });
 		
-		marker.bindPopup(htmlPop,{minWidth: 450,maxWidth: 500});
+}
+
+function drawMarkerWarning(data){
+	globalWarnings.clearLayers();
+	for(j in data){		
+			var markerLocation = new L.LatLng(parseFloat(data[j].geometry.coordinates[1]), parseFloat(data[j].geometry.coordinates[0]));				
+			var ico = new iconWarning();
+			var marker = new L.Marker(markerLocation,{icon: ico});
+			console.log(marker);
+			globalWarnings.addLayer(marker);
+			//map.addLayer(marker);
+			//marker.bindPopup(htmlPop);
+	}
 }
 
 function drawPolygon(tab,type){
@@ -212,5 +247,6 @@ $(document).ready(function () {
 	map.setView(mapCenter, zoom);	
 	map.addLayer(globalGroup);		
 	map.addLayer(globalRoutes);	
+	map.addLayer(globalWarnings);
 	
 });

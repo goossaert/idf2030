@@ -51,18 +51,18 @@
 			$("div#newLoc").show();
 			
 			locateStart(loc);
-			t=loc.split(",");
-			get_data(t[0], t[1], distance, nb_res, visu_map);		
+			t=loc.split(",");			
 	
 			//get_itinerary(48.843716, 2.3171895, t[0], t[1], visu_map_itinerary);
             a0 = load_osm_data(t[0], t[1], 'amenity', 'police');
             a1 = load_osm_data(t[0], t[1], 'tourism', 'museum');
-            a1 = load_osm_data(t[0], t[1], 'tourism', 'attraction');
+            a2 = load_osm_data(t[0], t[1], 'tourism', 'attraction');
 
-            $.when( a0, a1 ).then(function(data, textStatus, jqXHR){
+            $.when( a0, a1, a2 ).then(function(data, textStatus, jqXHR){
                 //console.log('Done with OSM');
                 //console.log(JSON.stringify(pois_danger, null, 2));
-                danger_around(t[0], t[1]);
+                //data = danger_around(t[0], t[1]);
+				get_data(t[0], t[1], distance, nb_res, visu_map);
             });
 
 			
@@ -94,6 +94,7 @@
 			$("div#newLoc a").click(function(e){
 				globalGroup.clearLayers();
 				globalRoutes.clearLayers();
+				globalWarnings.clearLayers();
 				map.closePopup();
 				map.setView(mapCenter, zoom);
 				$("section#content nav").show();
