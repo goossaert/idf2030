@@ -63,9 +63,21 @@
                 //console.log(JSON.stringify(pois_danger, null, 2));
                 //data = danger_around(t[0], t[1]);
 				get_data(t[0], t[1], distance, nb_res, visu_map);
-            });
-
+            });		
+		}
+		
+		function start_magot(pos){
+			console.log("magot");
+			if(pos!=0)
+				loc = pos.coords.latitude + "," +pos.coords.longitude;
+				
+			$("section#content nav").hide();
+			//$("div#newLoc").show();
 			
+			locateStart(loc);
+			t=loc.split(",");
+
+			get_data_magot(t[0], t[1], 100000, nb_res, visu_map);
 		}
 
 		function route(gps){
@@ -77,7 +89,7 @@
 		//INIT
 		$(document).ready(function(){
 			//event handlers
-			$("section#content nav div#toolsNav a.geoloc").click(function(e){
+			$("section#content nav#nav-1 div#toolsNav a.geoloc").click(function(e){
 				if (navigator.geolocation)
 				{
 				  navigator.geolocation.getCurrentPosition(function(position)
@@ -88,9 +100,27 @@
 				else
 				  alert("Geolocalisation on disponible");			
 			});
-			$("section#content nav div#toolsNav a.ok").click(function(e){
+			
+			$("section#content nav#nav-2 div#toolsNav a.geoloc").click(function(e){
+				if (navigator.geolocation)
+				{
+				  navigator.geolocation.getCurrentPosition(function(position)
+				  {
+					start_magot(position);
+				  });
+				}
+				else
+				  alert("Geolocalisation on disponible");			
+			});			
+			
+			$("section#content nav#nav-1 div#toolsNav a.ok").click(function(e){
 				start_search(0);
 			});
+			
+			$("section#content nav#nav-2 div#toolsNav a.ok").click(function(e){
+				start_magot(0);
+			});			
+			
 			$("div#newLoc a").click(function(e){
 				globalGroup.clearLayers();
 				globalRoutes.clearLayers();
@@ -100,12 +130,14 @@
 				$("section#content nav").show();
 				$("div#newLoc").hide();
 			});
+			
 			$("div#menu a").click(function(e){
 				if($(this).data("menu")!="none"){
 					$("div#menu").hide();
 					$("nav#nav-"+$(this).data("menu")).show();
 				}
 			});
+			
 			$("div#logo a").click(function(e){
 				globalGroup.clearLayers();
 				globalRoutes.clearLayers();			
@@ -142,6 +174,19 @@
 		</div>
 		<div class="spacer"></div>
 	</nav>
+	<nav id="nav-2">
+		<div id="logoNav">
+			<img src="img/mode_magot.png" alt="mode" />
+		</div>
+		<div id="toolsNav">
+			Position de départ
+			<a class="geoloc" href="#">Géolocalisation</a>
+			<label for="ville">Commune</label>
+			<input class="typeahead" type="text" placeholder="Ville" value="" />
+			<a class="ok" href="#" id="go">Ok</a>
+		</div>
+		<div class="spacer"></div>
+	</nav>	
 
 	<div id="newLoc">
 		<a href="#">

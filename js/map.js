@@ -70,6 +70,8 @@ function getIconFromType(type){
 		return "img/picto_eau.png";
 	}else if(type=="parc" || type=="foret"){
 		return "img/picto_foret.png";
+	}else if(type=="arbre"){
+		return "img/picto_magot.png";		
 	}else{
 		return "";
 	}
@@ -183,12 +185,13 @@ function drawMarker(tLnglat,type){
 		globalGroup.addLayer(marker);				
 		
 		//recup info warning + maj popup
-		var data = danger_around(tLnglat[1], tLnglat[0]);
-		var htmlPop=genPop(type,tLnglat, data);				
-		marker
-			.bindPopup(htmlPop,{minWidth: 450,maxWidth: 500})
-			.on('click', function (e) {	drawMarkerWarning(data); });
-		
+		if(type!="arbre"){
+			var data = danger_around(tLnglat[1], tLnglat[0]);
+			var htmlPop=genPop(type,tLnglat, data);				
+			marker
+				.bindPopup(htmlPop,{minWidth: 450,maxWidth: 500})
+				.on('click', function (e) {	drawMarkerWarning(data); });
+		}
 }
 
 function drawMarkerWarning(data){
