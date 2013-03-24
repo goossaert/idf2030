@@ -71,7 +71,6 @@ function get_data_magot(x, y, distance, num_rows, show_in_map) {
             var data_out = [];
             var i = 0;
             for (i = 0; i < data['records'].length; i++) {
-                data_out.push(poi);
                 poi = {'name': data['records'][i]['fields']['nom'],
                        'distance': data['records'][i]['fields']['dist'],
                        'geometry': data['records'][i]['geometry'],
@@ -96,10 +95,18 @@ function get_data_autolib(x, y, distance, num_rows, show_in_map) {
     // num_rows: number of POIs to return (-1 for unlimited)
     console.log('get_data_autolib() ' + x + ' ' + y);
 
+
+    $.getJSON('http://open-api.madebymonsieur.com/autolib/closest?lon=2.3360819&lat=48.8243977&limit=1', function(data) {
+        console.log('data: ' + data);
+        $.each(data, function(i, field){
+            console.log('api: ' + field);
+                  });
+                    });
+
     $.ajax({
         url: 'http://open-api.madebymonsieur.com/autolib/closest',
         //url: 'http://open-api.madebymonsieur.com/autolib/closest?lon=2.3360819&lat=48.8243977&accept=application/json&limit=1',
-        type: "GET",
+        type: "POST",
         cache: false,
         data: {
                 'lon': y,
@@ -108,12 +115,15 @@ function get_data_autolib(x, y, distance, num_rows, show_in_map) {
                'accept': 'application/json'},
         async: false,
         dataType:'jsonp',
-        error: function(jqXHR, exception) {
+        error: function (jqXHR, textStatus, errorThrown){
+            console.log(JSON.stringify(jqXHR) + ' ' + textStatus +'  '+errorThrown );
+            /*
             console.log('error autolib: ' + jqXHR.status);
             console.log(jqXHR.statusText);
             console.log(jqXHR.responseText);
             var responseText = jQuery.parseJSON(jqXHR.responseText);
             console.log(responseText);
+            */
         },
         success: function (data) {
             console.log(JSON.stringify(data, null, 2));
