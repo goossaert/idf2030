@@ -1,7 +1,7 @@
 
 var API_URL = 'http://datastore.opendatasoft.com/iledefrance2030/api/records/1.0/search';
 
-
+var pois_danger = [];
 
 
 function get_geometry_full(record) {
@@ -165,12 +165,129 @@ function get_data(x, y, distance, num_rows, show_in_map) {
     });
 
 
-
-
-
-
 }
 
+
+function get_osm_query(lat, lng, key, value){
+    var step = 0.1;
+
+    var e = lng + step;
+    var w = lng - step;
+    var n = lat + step;
+    var s = lat - step;
+
+	var query='<osm-script output="json"><query type="node"><has-kv k="'+ key +'" v="'+ value +'"/><bbox-query e="'+e+'" n="'+n+'" s="'+s+'" w="'+w+'"/></query><print/></osm-script>'
+	var url='http://overpass-api.de/api/interpreter?data='+encodeURIComponent(query);
+	
+	console.log(url);
+    return url;
+}
+
+
+
+
+function load_osm_data(lat, lng, key, value) {
+    console.log('get_osm_amenity() + ' + key + ' ' + value);
+    url = get_osm_query(lat, lng, key, value);
+
+    ajax = $.ajax({
+        url: url,
+        type: "GET",
+        //cache: false,
+        data: {},
+        async: true,
+        dataType:'json',
+        error: function(jqXHR, exception) {
+            console.log('error');
+        },
+        success: function (data) {
+            //console.log(JSON.stringify(data, null, 2));
+            //show_in_map(data_out);
+            //console.log(JSON.stringify(data_out, null, 2));
+            var data_out = [];
+
+            var i = 0;
+            for (i = 0; i < data['elements'].length; i++) {
+                distance = distance_gps(lat, lng, data['elements'][i]['lat'], data['elements'][i]['lon']) * 1000;
+                distance2 = distance_gps2(lat, lng, data['elements'][i]['lat'], data['elements'][i]['lon']);
+                //console.log(distance + ' - ' + distance2 + ' - ' + JSON.stringify(data['elements'][i], null, 2));
+                geometry = {
+                      "type": "Point",
+                      "coordinates": [
+                      '' + data['elements'][i]['lon'],
+                      '' + data['elements'][i]['lat']
+                      ] };
+
+                name = null;
+                type = null;
+                comment = null;
+                if ('name' in data['elements'][i]['tags']) {
+                    name = data['elements'][i]['tags']['name'];
+                }
+
+                if( key == 'amenity' ) { // police
+                    if ( name == null || name == 'null' ) name = 'Police';
+                    type = data['elements'][i]['tags']['amenity']
+                    comment = null;
+                } else if( key == 'tourism' ) {
+                    if ( name == null || name == 'null' ) name = 'Lieu touristique';
+                    type = 'tourism';
+                    comment = data['elements'][i]['tags']['description'];
+                }
+
+                poi = {'name': name,
+                       'distance': distance,
+                       'geometry': geometry,
+                       'geometry_full': geometry,
+                       'comment': comment,
+                       'type': type
+                      };
+                data_out.push(poi);
+                pois_danger.push(poi);
+            }
+        }
+    });
+
+    return ajax;
+}
+
+
+function danger_around(lat, lon) {
+    var i = 0; 
+    var i_best = 0;
+    var distance_best = 10000000000;
+    var distance = 0;
+    pois_list = pois_danger;
+
+    types = { 
+                'tourism': {'distance_best': 10000000000, 'i_best': 0, 'found': false},
+                'police': {'distance_best': 10000000000, 'i_best': 0, 'found': false}
+            };
+    types_name = ['tourism', 'police'];
+
+    for (i = 0; i < pois_list.length; i++) {
+        type = pois_list[i]['type'];
+        distance = distance_gps(lat, lon, pois_list[i]['geometry']['coordinates'][1], pois_list[i]['geometry']['coordinates'][0]) * 1000;
+        if (distance < types[type]['distance_best']) {
+            types[type]['i_best'] = i;
+            types[type]['distance_best'] = distance;
+            types[type]['found'] = true;
+        }
+    }
+
+    pois_out = [];
+    for (i = 0; i < types_name.length; i++) {
+        name = types_name[i];
+        if( types[name]['found'] == true ) {
+            poi_best = pois_list[types[name]['i_best']];
+            poi_best['distance_to_poi'] = types[name]['distance_best'];
+            pois_out.push(poi_best);
+        }
+    }
+
+    console.log('pois_best: ' + JSON.stringify(pois_out));
+    return pois_out;
+}
 
 
 // idf_CDGT2012_MosProtege
