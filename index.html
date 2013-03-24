@@ -46,10 +46,11 @@
 		  {
 			loc = position.coords.latitude + "," +position.coords.longitude;
 			$("input#gps").val(loc);
+			//=> on peut lancer le getdata direct
 		  });
 		}
 		else
-		  alert("Votre navigateur ne prend pas en compte la géolocalisation HTML5");
+		  console.log("Pas de geoloc");
 		  		
 				
 		//INIT
