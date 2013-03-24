@@ -57,6 +57,7 @@ function getColorFromType(type){
 }
 
 function genPop(type){
+
 	if(type=="secteur_extension"){
 		return "Secteur d'extension";
 	}else if(type=="eau"){
@@ -68,6 +69,9 @@ function genPop(type){
 	}else{
 		return "";
 	}
+	
+	html="<div class='infoPop'><span>"+type+"</span>";
+	
 }
 
 function tabReverse(t){

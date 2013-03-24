@@ -2,32 +2,75 @@
 /* main.css */
 /***********/
 
+div.spacer{
+	clear: both;
+	height: 0;
+}
 
-section#content h1{
-	position: relative;
-	top: 0;
-	left: 0;
-	height: 10%;
-	width: 100%;
-	text-align: center;
+section#content div#logo{
+	position: absolute;
+	top: 25px;
+	right: 25px;
+	width: 230px;
+	height: 200px;
+	z-index: 200;
+}
+
+section#content div#newLoc{
+	display: none;
+	position: absolute;
+	z-index: 200;
+	width: 90px;
+	height: 90px;
+	top: 250px;
+	right: 25px;
 }
 
 section#content nav{
 	position: absolute;
 	z-index: 200;
-	background: #fff;
-	width: 700px;
+	width: 385px;
 	height: 200px;
-	top: 50%;
-	margin-top: -100px;
-	left: 50%;
-	margin-left: -350px;	
+	top: 250px;
+	right: 25px;
+}
+
+section#content nav div#logoNav{
+	float: left;
+	width: 120px;
+	height: 200px;
+}
+section#content nav div#toolsNav{
+	float: left;
+	width: 225px;
+	height: 160px;
+	background: #fff;
+	padding: 20px;
+	color: #666;
+}
+section#content nav div#toolsNav input[type=text]{
+	width: 150px;
+}
+section#content nav div#toolsNav a.geoloc{
+	display: block;
+	color: #905075;
+	text-decoration: underline;
+	padding: 15px 0;
+}
+section#content nav div#toolsNav a.ok{
+	display: block;
+	color: #905075;
+	text-decoration: underline;
+}
+section#content nav div#logoDepart{
+	float: right;
+	width: 60px;
+	height: 200px;
 }
 
 section#content div#map {
 	position: absolute;
-	top: 10%;
 	width: 100%;
-	height: 90%;
+	height: 100%;
 	z-index: 100;
 }
