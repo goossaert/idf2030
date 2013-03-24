@@ -5,6 +5,7 @@
 //////
 //VAR 
 var globalGroup = new L.LayerGroup();	
+var globalRoutes = new L.LayerGroup();
 var mapCenter = new L.LatLng(48.8436355,2.3171283);
 var zoom=10;	
 var map;//à declarer ici sinon IE bug
@@ -56,22 +57,36 @@ function getColorFromType(type){
 	}
 }
 
-function genPop(type){
-
+function genPop(type,gps){
+	var titre="";
+	var desc="";
+	var tagline="";
+	var html="";
+		
 	if(type=="secteur_extension"){
-		return "Secteur d'extension";
+		titre="<span class='orange'>Chantier</span>";
+		desc="<p><b>Repérez le chantier où ça bétonne !</b></p><p>Certains secteurs dits à fort potentiel de densification sont pointés par le SDRIF afin de polariser l’urbanisation</p>";
+		tagline="<footer class='orange'>Polariser et équilibrer</footer>";
 	}else if(type=="eau"){
-		return "Point d'eay";
-	}else if(type=="parc"){
-		return "Parc";
-	}else if(type=="foret"){
-		return "Foret";
+		titre="<span class='bleu'>Point d'eau</span>";
+		desc="<p><b>N’oubliez pas de lester !</b></p><p>Mettre en place une trame bleue à l’échelle de l’île de France est un des enjeux majeurs du SDRIF</p>";
+		tagline="<footer class='bleu'>Préserver et valoriser</footer>";
+	}else if(type=="parc" || type=="foret"){
+		titre="<span class='vert'>Espace vert</span>";
+		desc="<p><b>Sortez des sentiers battus !</b></p><p>Le SDRIF délimite les espaces boisés existants afin de les préserver et de les valoriser.</p>";
+		tagline="<footer class='vert'>Préserver et valoriser</footer>";
 	}else{
 		return "";
 	}
 	
-	html="<div class='infoPop'><span>"+type+"</span>";
-	
+	html="<div class='popLeft'>"+titre+""+desc+"<aside class='infoBrigand'></aside>"+tagline+"</div>";
+	html+="<div class='popRight'><span>&gt; Itineraire</span><p>Options</p>"+
+		"<input disabled type='checkbox' name='bricolage' />&nbsp;Magasin de bricolage<br />"+
+		"<input type='checkbox' name='autolib' />&nbsp;Autolib<br />"+
+		"<a data-gps='"+gps[1]+","+gps[0]+"' onClick='route(\""+gps[1]+","+gps[0]+"\")' href='#'><img src='img/itineraire.png' alt='' /></a></div>";
+	html+="<div class='spacer'></div>";
+		
+	return html;
 }
 
 function tabReverse(t){
@@ -96,15 +111,12 @@ function distance(lat_a, lon_a, lat_b, lon_b)  {
 }
 
 function getClosePolice(lat,lng){
-console.log(lat,lng);
 	var e=(Math.ceil(100*lng))/100; 
 	var w=(Math.floor(100*lng))/100; 
 	var n=(Math.ceil(100*lat))/100;
 	var s=(Math.floor(100*lat))/100;
 	var query='<osm-script output="json"><query type="node"><has-kv k="amenity" v="police"/><bbox-query e="'+e+'" n="'+n+'" s="'+s+'" w="'+w+'"/></query><print/></osm-script>'
 	var url='http://overpass-api.de/api/interpreter?data='+encodeURIComponent(query);
-	
-	console.log(url);
 }
 
 ///////////////////
@@ -124,12 +136,14 @@ function locateStart(loc){
 
 function drawMarker(tLnglat,type){
 		var markerLocation = new L.LatLng(parseFloat(tLnglat[1]), parseFloat(tLnglat[0]));
-		
+				
 		var ico = new icon({"iconUrl": getIconFromType(type)});
 		var marker = new L.Marker(markerLocation,{icon: ico});
 		globalGroup.addLayer(marker);		
-		var htmlPop=genPop(type);
-		marker.bindPopup(htmlPop);
+		
+		var htmlPop=genPop(type,tLnglat);
+		
+		marker.bindPopup(htmlPop,{minWidth: 450,maxWidth: 500});
 }
 
 function drawPolygon(tab,type){
@@ -139,9 +153,10 @@ function drawPolygon(tab,type){
 }
 
 function drawPolyline(line) {
-	var color = "#36A862";
+	globalRoutes.clearLayers();
+	var color = "red";
     var polyline = new L.Polyline(line);
-	globalGroup.addLayer(polyline);
+	globalRoutes.addLayer(polyline);
 }
 
 
@@ -154,6 +169,7 @@ function visu_map(tab){
 		if(tab[i].geometry_full.type == "Polygon")
 			drawPolygon(tab[i].geometry_full.coordinates,tab[i].type);
 	}
+	
 }
 
 function visu_map_itinerary(data) {
@@ -172,5 +188,6 @@ $(document).ready(function () {
 	
 	map.setView(mapCenter, zoom);	
 	map.addLayer(globalGroup);		
+	map.addLayer(globalRoutes);	
 	
 });

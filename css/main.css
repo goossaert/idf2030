@@ -27,12 +27,26 @@ section#content div#newLoc{
 }
 
 section#content nav{
+	display: none;
 	position: absolute;
 	z-index: 200;
-	width: 385px;
+	width: 380px;
 	height: 200px;
 	top: 250px;
 	right: 25px;
+}
+
+div#menu{
+	position: absolute;
+	z-index: 200;
+	height: 200px;
+	top: 250px;
+	right: 15px;
+}
+div#menu a{
+	display: block;
+	float: left;
+	margin-right: 10px;
 }
 
 section#content nav div#logoNav{
@@ -42,14 +56,14 @@ section#content nav div#logoNav{
 }
 section#content nav div#toolsNav{
 	float: left;
-	width: 225px;
+	width: 220px;
 	height: 160px;
 	background: #fff;
 	padding: 20px;
 	color: #666;
 }
 section#content nav div#toolsNav input[type=text]{
-	width: 150px;
+	width: 140px;
 }
 section#content nav div#toolsNav a.geoloc{
 	display: block;
@@ -77,17 +91,45 @@ section#content div#map {
 
 /********/
 /* map */
-div.pop{
-	border: #ececec;
-}
 
 div.popLeft{
 	width: 290px;
-	height: 250px;
+	height: 240px;
+	float: left;
+	padding-top: 10px;
+}
+
+div.popLeft span{
+	font-size: 14px;
+}
+
+div.popLeft .bleu{
+	color: #5DBFC3;
+}
+div.popLeft .orange{
+	color: #E6511E;
+}
+div.popLeft .vert{
+	color: #36A862;
+}
+
+div.popLeft footer{
+	margin-top: 80px;
+	border-top: solid 2px #ececec;
+	width: 270px;
+	padding-top: 10px;
 }
 
 div.popRight{	
-	width: 160px;
-	height:250px;
-	background: #f5f5f5;
+	width: 140px;
+	height:240px;
+	float: left;
+	border-left: solid 1px #ececec;
+	padding-left: 20px;
+	padding-top: 10px;
+}
+
+div.popRight a{	
+	display: block;
+	margin-top: 45px;
 }

@@ -53,9 +53,14 @@
 			t=loc.split(",");
 			get_data(t[0], t[1], distance, nb_res, visu_map);		
 			
-			//get_itinerary(48.843716, 2.3171895, t[0], t[1], visu_map_itinerary);
 		}
-		
+
+		function route(gps){
+			t=loc.split(",");
+			d=gps.split(",");
+			get_itinerary(t[0], t[1], d[0], d[1], visu_map_itinerary);
+		}			
+	
 		//INIT
 		$(document).ready(function(){
 			//event handlers
@@ -79,7 +84,13 @@
 				map.setView(mapCenter, zoom);
 				$("section#content nav").show();
 				$("div#newLoc").hide();
-			});			
+			});
+			$("div#menu a").click(function(e){
+				if($(this).data("menu")!="none"){
+					$("div#menu").hide();
+					$("nav#nav-"+$(this).data("menu")).show();
+				}
+			});
 		});
 	</script>	
 
@@ -93,7 +104,7 @@
 		<img src="img/logo_bf.png" alt="logo" />
 	</div>
 
-	<nav>
+	<nav id="nav-1">
 		<div id="logoNav">
 			<img src="img/mode_bonDebarras.png" alt="mode" />
 		</div>
@@ -115,6 +126,19 @@
 			<img src="img/bonDebarras_newLoc.png" alt="newloc" />
 		</a>
 	</div>
+	
+	<div id="menu">
+		<a data-menu="1" href="#">
+			<img src="img/mode_bonDebarras.png" alt="" />
+		</a>
+		<a data-menu="2" href="#">
+			<img src="img/mode_magot.png" alt="" />
+		</a>		
+		<a data-menu="none" href="#">
+			<img src="img/mode_incognito.png" alt="" />
+		</a>
+		<div class="spacer"></div>		
+	</div>	
 	
 	<div id="map"></div>
 	
