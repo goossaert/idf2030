@@ -33,21 +33,8 @@ function get_itinerary(x_start, y_start, x_end, y_end, show_in_map) {
             console.log('error');
         },
         success: function (data) {
-            //console.log(JSON.stringify(data, null, 2));
-            /*
-            for (i = 0; i < data['records'].length; i++) {
-                poi = {'name': null,
-                       'distance': data['records'][i]['fields']['dist'],
-                       'geometry': data['records'][i]['geometry'],
-                       'geometry_full': get_geometry_full(data['records'][i]),
-                       'comment': null,
-                       'type': 'secteur_extension'
-                      };
-                data_out.push(poi);
-            }
-            */
             show_in_map(data);
-            //console.log(JSON.stringify(data_out, null, 2));
+            //console.log(JSON.stringify(data, null, 2));
         }
     });
 
