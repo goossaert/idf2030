@@ -119,7 +119,7 @@ function genPop(type,gps,data){
 			if(data[0].distance_to_poi < 1500 && data[1].distance_to_poi < 1500)
 				alerteBrigand="<span style='color: red'>Attention 2 points de danger à "+Math.floor(data[0].distance_to_poi)+"m et "+Math.floor(data[1].distance_to_poi)+"m</span>";
 			else if(data[0].distance_to_poi < 1500 || data[1].distance_to_poi < 1500)
-					alerteBrigand="<span style='color: orange'>Attention 1 point de dangerà "+Math.floor(data[0].distance_to_poi)+"m</span>";
+					alerteBrigand="<span style='color: orange'>Attention 1 point de danger à "+Math.floor(data[0].distance_to_poi)+"m</span>";
 	}
 	
 	html="<div class='popLeft'>"+titre+""+desc+"<aside class='infoBrigand'>"+alerteBrigand+"</aside>"+tagline+"</div>";
