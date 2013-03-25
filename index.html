@@ -140,11 +140,23 @@
 			
 			$("div#logo a").click(function(e){
 				globalGroup.clearLayers();
-				globalRoutes.clearLayers();			
+				globalRoutes.clearLayers();	
+				globalWarnings.clearLayers();				
 				$("nav").hide();
 				$("div#newLoc").hide();
+				$("div#about").hide();
 				$("div#menu").show();
 			});
+			
+			$("div#logoAbout a").click(function(e){
+				globalGroup.clearLayers();
+				globalRoutes.clearLayers();	
+				globalWarnings.clearLayers();				
+				$("nav").hide();
+				$("div#newLoc").hide();
+				$("div#menu").hide();
+				$("div#about").show();
+			});		
 		});
 	</script>	
 
@@ -207,6 +219,43 @@
 			<img src="img/bonDebarras_newLoc.png" alt="newloc" />
 		</a>
 	</div>
+	
+	<div id="logoAbout">
+		<a href="#">
+			<img src="img/mode_about.png" alt="about" />
+		</a>
+	</div>
+	
+	<div id="about">
+		<h2>Brigand Futé est un projet d’appli web réalisé en 48h, à l’occasion du <a href="http://hackathon.iledefrance2030.fr">Hack Data Week End IDF 2030</a></h2>
+
+		<p><em>L’objectif était pour les 10 équipes en compétition,  de fabriquer, à partir des données et documents mis à disposition, des prototypes d’applications numériques et de contenus interactifs permettant de mieux partager la vision de l’aménagement régional et de booster l’agilité de la métropole francilienne pour préparer 2030.</em></p>
+
+		<p>Notre équipe, les nettoyeurs, a detourné et utilisé les données du SDRIF et ses visions d’aménagement, pour aider les franciliens à se sortir de situations délicates, comme se debarasser d’un corps...</p>
+
+		<div class="evoAbout">
+			Pour suivre le projet et son évolution, ou nous contacter merci d’utiliser Twitter <a href="http://twitter.com/BrigandFuT">@BrigandFuT</a>
+		</div>
+
+		<h2>Les Nettoyeurs ont remporté le premier prix du hackathon !</h2>
+
+		<div class="contactAbout">
+			<span>Jessica Zheng</span>
+			#designer #graphiste / <a href="mailto:jessicoolka@gmail.com">jessicoolka@gmail.com</a>
+			<br />
+			<span>Nicolas Fonty</span>
+			#architecte #urbaniste / <a href="mailto:fonty.nicolas@gmail.com">fonty.nicolas@gmail.com</a>
+			<br />
+			<span>Emmanuel Goossaert</span>
+			#developpeur / <a href="mailto:emmanuel.goossaert@gmail.com">emmanuel.goossaert@gmail.com</a>
+			<br />
+			<span>Alexis Kovalenko</span>
+			#developpeur / <a href="mailto:alexis.kovalenko@gmail.com">alexis.kovalenko@gmail.com</a>
+			<br />
+			<span>Benjamin Collignon</span>
+			#designer #graphiste / <a href="mailto:benjamin.etco@gmail.com">benjamin.etco@gmail.com</a>
+		</div>
+	</div>	
 	
 	<div id="menu">
 		<a data-menu="1" href="#">

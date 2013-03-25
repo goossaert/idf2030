@@ -8,7 +8,7 @@ div.spacer{
 }
 
 section#content div#logo{
-	position: absolute;
+	position: fixed;
 	top: 25px;
 	right: 25px;
 	width: 230px;
@@ -18,7 +18,7 @@ section#content div#logo{
 
 section#content div#newLoc{
 	display: none;
-	position: absolute;
+	position: fixed;
 	z-index: 200;
 	width: 90px;
 	height: 90px;
@@ -26,9 +26,18 @@ section#content div#newLoc{
 	right: 25px;
 }
 
+
+
+section#content div#logoAbout{
+	position: fixed;
+	z-index: 250;
+	top: 460px;
+	right: 25px;
+}
+
 section#content nav#nav-1{
 	display: none;
-	position: absolute;
+	position: fixed;
 	z-index: 200;
 	width: 380px;
 	height: 200px;
@@ -37,7 +46,7 @@ section#content nav#nav-1{
 }
 section#content nav#nav-2{
 	display: none;
-	position: absolute;
+	position: fixed;
 	z-index: 200;
 	width: 380px;
 	height: 200px;
@@ -46,7 +55,7 @@ section#content nav#nav-2{
 }
 
 div#menu{
-	position: absolute;
+	position: fixed;
 	z-index: 200;
 	height: 200px;
 	top: 250px;
@@ -141,4 +150,54 @@ div.popRight{
 div.popRight a{	
 	display: block;
 	margin-top: 45px;
+}
+
+/********/
+/*ABOUT*/
+
+section#content div#about{
+	display: none;
+	position: fixed;
+	z-index: 200;
+	width: 400px;
+    right: 160px;
+    top: 175px;
+	background: #fff;
+	padding: 10px 20px;
+	font-family: Georgia, serif;
+	font-size: 10px;
+}
+
+section#content div#about a{
+	color: #905075;
+}
+
+section#content div#about p{
+	font-size: 1.1em;
+}
+
+section#content div#about h2{
+	font-weight: normal;
+	font-family: arial;
+	font-size: 1.4em;
+	line-height: 21px;
+	color: #905075;
+}
+
+section#content div#about div.evoAbout{
+	border-top: 1px dashed #666;
+	border-bottom: 1px dashed #666;
+	font-size: 1.4em;
+	padding: 5px 0;
+}
+
+section#content div#about div.contactAbout{
+	font-style: italic;
+	font-size: 1.1em;
+}
+
+section#content div#about div.contactAbout span{
+	display: block;
+	font-size: 1.4em;
+	margin-top: 10px;
 }
