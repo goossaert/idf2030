@@ -260,7 +260,7 @@ function visu_map_itinerary(data) {
 // MAP INIT
 $(document).ready(function () {
 	map = new L.Map('map');	
-	L.tileLayer('http://{s}.tile.cloudmade.com/dcc40974a7de424fb339ecfb2ac4abcd/997/256/{z}/{x}/{y}.png', {
+	L.tileLayer('https://{s}.tiles.mapbox.com/v3/benetco.ggeffhde/{z}/{x}/{y}.png', {
 		attribution: 'Les Nettoyeurs x <a href="http://openstreetmap.org">OpenStreetMap</a> x <a href="http://cloudmade.com">CloudMade</a> x <a href="http://opendatasoft.com/">OpenDataSoft</a>',
 		maxZoom: 18
 	}).addTo(map);
